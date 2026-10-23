@@ -1,2 +1,151 @@
 <!DOCTYPE html>
-<html lang="tr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Anestezi Eğitim Modülleri Takip</title></head><body><h1>Anestezi Eğitim Modülleri</h1><p>Dosya yerel sürümle değiştirilecek.</p></body></html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10233f">
+<title>Anestezi Eğitim Takip Listesi</title>
+<style>
+:root{--bg:#f3f6fb;--panel:#fff;--ink:#17243a;--muted:#64748b;--line:#e2e8f0;--accent:#2459a9;--soft:#eaf1ff;--green:#16794b;--greenbg:#e8f7ef;--shadow:0 8px 28px rgba(22,39,68,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#10233f,#2459a9);color:white;padding:28px 20px 32px}
+.wrap{max-width:1100px;margin:auto}h1{font-size:clamp(24px,4vw,36px);line-height:1.15;margin:0 0 9px;letter-spacing:-.5px}.sub{color:#d9e6ff;margin:0;max-width:760px}
+main{max-width:1100px;margin:-16px auto 40px;padding:0 16px}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.stat,.toolbar,.module{background:var(--panel);border:1px solid var(--line);border-radius:15px;box-shadow:var(--shadow)}
+.stat{padding:16px 18px}.stat small{display:block;color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px}.stat strong{font-size:27px;display:block;margin-top:3px}
+.progress{height:7px;background:#e8edf5;border-radius:99px;overflow:hidden;margin-top:10px}.progress>div{height:100%;width:0;background:#28a36a;transition:width .2s}
+.toolbar{padding:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+input[type=search]{flex:1;min-width:220px;padding:11px 13px;border:1px solid #cbd5e1;border-radius:10px;font:inherit;outline:none}input[type=search]:focus{border-color:var(--accent);box-shadow:0 0 0 3px #2459a91c}
+button,.select{border:1px solid #cbd5e1;background:white;color:var(--ink);padding:10px 13px;border-radius:10px;font:inherit;cursor:pointer}button:hover{background:#f8fafc}.danger{color:#a12b2b;border-color:#f0caca}.hint{color:var(--muted);font-size:12px;margin:0 0 15px;padding:0 3px}
+.module{margin-bottom:13px;overflow:hidden}.module-head{display:flex;align-items:center;gap:12px;padding:17px 18px;cursor:pointer;list-style:none;background:#fff}.module-head::-webkit-details-marker{display:none}.num{flex:0 0 40px;height:40px;border-radius:12px;background:var(--soft);color:var(--accent);display:grid;place-items:center;font-weight:800}
+.module-title{flex:1;min-width:0}.module-title b{display:block;font-size:16px}.module-title small{color:var(--muted)}.module-count{font-size:12px;color:var(--muted);white-space:nowrap}.chevron{color:var(--muted);transition:transform .2s}details[open] .chevron{transform:rotate(180deg)}
+.items{border-top:1px solid var(--line);padding:4px 16px 12px}.group{margin:12px 0 6px;padding:7px 9px;background:#f5f8fc;border-radius:8px;color:#334d70;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;display:flex;align-items:center;gap:9px}.group-check{width:17px;height:17px;flex:0 0 auto;margin:0;accent-color:#168451;cursor:pointer}.group-name{flex:1;min-width:0}.group-count{font-size:11px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--muted);white-space:nowrap}.group-date{font-size:11px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--green);white-space:nowrap}.group-date:empty{display:none}
+.item{display:flex;align-items:flex-start;gap:11px;padding:11px 8px;border-bottom:1px solid #eef2f7}.item:last-child{border-bottom:0}.item input{width:18px;height:18px;margin:3px 0 0;accent-color:#168451;flex:0 0 auto;cursor:pointer}.topic{flex:1;min-width:0;overflow-wrap:anywhere}.topic.done{text-decoration:line-through;color:#718096}.date{flex:0 0 auto;color:var(--green);background:var(--greenbg);border-radius:7px;padding:3px 8px;font-size:12px;font-weight:700;white-space:nowrap}.date.empty{display:none}.empty-state{padding:28px;text-align:center;color:var(--muted);display:none}
+footer{max-width:1100px;margin:0 auto;padding:0 18px 30px;color:var(--muted);font-size:12px}
+@media(max-width:620px){header{padding:23px 16px 29px}.summary{gap:7px}.stat{padding:12px 10px}.stat strong{font-size:22px}.stat small{font-size:10px}.toolbar{padding:10px}.module-head{padding:13px 12px;gap:9px}.num{flex-basis:34px;height:34px}.module-count{display:none}.items{padding:4px 10px 10px}.item{padding:10px 3px;gap:9px}.date{font-size:11px;padding:3px 6px}}
+@media(prefers-color-scheme:dark){:root{--bg:#0c1422;--panel:#131f31;--ink:#e8eef8;--muted:#9aabc2;--line:#29384d;--soft:#1c3354;--shadow:0 8px 28px rgba(0,0,0,.16);--greenbg:#123b2b}.module-head{background:var(--panel)}.group{background:#1a2a40;color:#c4d7f2}.group-count{color:var(--muted)}.item{border-color:#26364a}input[type=search],button,.select{background:#131f31;color:var(--ink);border-color:#394a61}.progress{background:#29384d}.date{color:#7ee0ae}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Anestezi Eğitim Takip Listesi</h1><p class="sub">PDF içindekilerindeki modülleri ve konu başlıklarını sırayla takip edin. Bir konuyu tamamladığınızda kutuyu işaretleyin; bitirme tarihi otomatik kaydedilir.</p></div></header>
+<main>
+<section class="summary">
+ <div class="stat"><small>Tüm konular</small><strong id="total">0</strong></div>
+ <div class="stat"><small>Tamamlanan</small><strong id="completed">0</strong><div class="progress"><div id="bar"></div></div></div>
+ <div class="stat"><small>Kalan konu</small><strong id="remaining">0</strong></div>
+</section>
+<section class="toolbar">
+ <input id="search" type="search" placeholder="Konu veya modül ara…" aria-label="Konu veya modül ara">
+ <button id="openAll">Tümünü aç</button><button id="closeAll">Tümünü kapat</button><button id="showRemaining">Kalanları göster</button><button id="reset" class="danger">İşaretleri temizle</button>
+</section>
+<p class="hint">Kayıtlar bu tarayıcıda otomatik olarak saklanır (localStorage). Aynı cihaz ve tarayıcıda sayfayı yeniden açtığınızda işaretler ve tarihler korunur.</p>
+<div id="modules"></div><div id="empty" class="empty-state">Aramanızla eşleşen konu bulunamadı.</div>
+</main>
+<footer>Kaynak: yüklediğiniz “İçindekiler TARD” PDF dosyası. Başlıklar kaynak belgedeki yazımları mümkün olduğunca korunarak aktarılmıştır.</footer>
+<script>
+const curriculum = [
+{title:"1. Solunum ve Toraks Modülü",groups:[
+["Temel Bilgiler 1",["Solunum sistemi anatomisi","Solunum fiziği","İnhalasyon anest ezikleri".replace("anest ezikleri","anestezikleri"),"Solunum fizyolojisi","Solunum monitörizasyonu"]],
+["Temel Bilgiler 2",["Oksijen","Karbondioksit metabolizması ve kapnografi","Tartışma soruları"]],
+["Anestezi Makinası ve Düşük Akım",["Anestezi devreleri, makinası ve vaporizatörler","Klinik kullanımda düşük akım anestezi"]],
+["Anestezide-MV",["Solunum modları & nonkonvansiyonel modlar","Postoperatif pulmoner komplikasyonlar & koruyucu ventilasyon","Tartışma soruları"]],
+["Görüntüleme Yöntemleri",["Akciğer ultrasonografisi"]],
+["Torasik Anestezi",["Torasik anestezi -1","Torasik anestezi -2"]],
+["Özellikli Durumlar",["KOAH","Pulmoner hipertansiyon","ARDS"]],
+["Solunum Yoğun Bakımda",["Non-invaziv ventilasyon","Weaning","Tartışma soruları"]]]},
+{title:"2. Kalp ve Dolaşım Modülü",groups:[
+["Kalp 1",["Konuşma","Kalp elektrofizyolojisi ve mekaniği"]],
+["Kardiyovasküler 2 Fizyoloji",["EKG","Kan basıncı"]],
+["Kardiyovasküler 3 Fizyoloji",["Kalp siklusu ve debisi","Her iki ventrikülün ön yükünün değerlendirilmesi"]],
+["Kardiyovasküler 4 Cerrahide Anestezi",["Açık kalp cerrahisinde anestezi","Ekstrakorporeal dolaşım","Açık ve endovasküler aort cerrahilerinde (EVAR, TEVAR, TAVI) anestezi","Karotis ve perivasküler cerrahide anestezi"]],
+["Farmakoloji ve Kardiyovasküler 5",["Vazopressörler ve pozitif inotropik ajanlar","Beta blokörler, vazodilatörler, kalsiyum kanal blokörleri"]],
+["Non-kardiyak Cerrahi",["Preoperatif değerlendirme ve koroner arter hastalığı","Hipertansiyon","Aritmi"]],
+["Yoğun Bakım ve Kardiyovasküler",["Kardiyojenik şok","Akut miyokard infarktüsü","Kardiyak arrest ve kardiyopulmoner resüsitasyon"]],
+["Yoğun Bakım ve Kardiyovasküler 2",["Pulmoner ödem","Pulmoner emboli"]],
+["Perioperatif Kardiyovasküler",["Perioperatif kardiyak komplikasyonlar 1","Perioperatif non-kardiyak komplikasyonlar"]],
+["Teknikler ve Cihazlar",["Pacemaker","Mekanik dolaşım destek sistemleri","Transözefageal ekokardiyografı","Kardiyopulmoner resüsitasyonlar-özel durumlar","Arter dalga analizi ile kalp debisi monitörizasyonuna örnekler"]],
+["Olgu Tartışmaları",["Olgularla transözefageal görüntüleme","Olgu sunumu"]]]},
+{title:"3. Yoğun Bakım, Acil, Kan ve Kan Transfüzyonu Modülü",groups:[
+["Açılış-1",["Konuşma"]],
+["Kan 2",["Sodyum potasyum metabolizması","Sıvı dengesi","Asit dengesi 1-2"]],
+["Kan 3",["Antikoagülan tedavi ve trombolitik tedavi","Yoğun bakım ünitesinde endokrin aciller"]],
+["Kan 4",["Sepsis epidemiyoloji patofizyoloji","Sepsis tanı tedavi","Nütrisyon tedavisi 1"]],
+["Kan 5",["Yanık ve yönetimi","Nozokomiyal enfeksiyonlar ve antibiyotikler","Akut karaciğer yetersizliği"]],
+["Kan 6",["Çoklu travmalar","Kafa travmalı hastalarda yoğun bakım","Dolaşım şoku","Göğüs travmaları"]],
+["Kan 7",["ARDS","Yoğun bakımda kan ve kan ürünleri kullanımı"]],
+["Kan 8",["Hemostaz ve hemostaz bozukluklarının tanı ve tedavisi","Akut böbrek hasarı"]],
+["Kan 9",["Akut pankreatit","Yoğun bakımda ultrason kullanımı"]]]},
+{title:"4. Anne Anestezisi – Çocuk Anestezisi, İstenmeyen Etkiler Modülü",groups:[
+["Video İçerikleri",["Yenidoğan ventilasyonu","Gebelik ve emzirme döneminde ilaç etkileşimleri ve kullanımı","Obstetrik anestezi ünitesinin organizasyonu","Nöroaksiyel anestezi komplikasyonları ve tedavisi","Çocuklarda peroperatif kan transfüzyonu","Genel anestezi yönetimi ve komplikasyonları","Postpartum kanama olgusu","Perioperatif sıvı yönetimi (çocuk hastalarda)","OSA + tonsil havayolu kanıyor","Erişkin ve çocuğun fizyolojik farklılıkları","Gebelikte annelikte oluşan fizyolojik değişikler","Pediatride sedo-analjezi","Gebede non-obstetrik cerrahide anestezi","Obstetrik acillerde tanı tedavi ve yoğun bakım","Sezaryende nöroaksiyel anestezi teknikleri ve yönetimi","Pediatrik olgularda perioperatif gövde ve periferik bloklar","Yandaş hastalığı olan gebe","Yandaş hastalığı olan gebe-1 kalp hastalıkları","Yenidoğan acilleri","Preeklampsi eklampsi HELLP","Nöroaksiyel analjezi teknikleri ve yönetimi (EPL, KSE ve DPE)","Yenidoğan resüsitasyonu","Parenteral analjezi teknikleri - PCA","Yenidoğan ve infant anestezisi","Perioperatif santral bloklar","Gebede CPR","Gebede alerji-anafilaksi","Perioperatif ağrıda farmakolojik yöntemler"]]]},
+{title:"5. Nöroloji, Bölgesel Anestezi ve Ağrı Yönetimi Modülü",groups:[
+["Video İçerikleri",["Santral periferik ve otonom sinir sistemi fizyolojisi","Sıcaklık regülasyonu","Malign hipertermi","Perioperatif nörolojik komplikasyonlar ve kognitif disfonksiyonlar","Nöroşirürjide anestezi","Nörolojik ve nöromüsküler hastalıklarda anestezi","Nöromüsküler kavşak fizyolojisi ve monitörizasyonu","Nöromüsküler blokörler ve bloğun geri döndürülmesi","Ağrılı hastanın nöro ortopedik ve nörolojik değerlendirilmesi","İnatçı nöbetleri olan hastanın değerlendirilmesi","İnmeli hastanın değerlendirilmesi","Koma ve zehirlenmeler","Yoğun bakımda sedasyon","Beyin ölümü, donör bakımı, organ bağışı yönetimi","Ağrı yolları ve mekanizmaları - mekanizma bazlı ağrı tedavisi","Akut ağrı & postoperatif ağrı","Kronik ağrı sendromları","Analjezikler, co-analjezikler ve adjuvanlar","Lokal anestezikler","Nöroaksiyel bloklar","Üst ekstremite rejyonel anestezi","Alt ekstremite periferik sinir blokları","Gövde blokları","Rejyonel anestezi komplikasyonları","Terminal dönem ve palyatif bakım","Göz anestezisi","KBB anestezisi","Zor havayolu yönetimi","Göz anestezisi olgu sunumu"]]]},
+{title:"6. Hasta ve Cerrahi Tipine Göre Anestezi ve Yönetimi Modülü",groups:[
+["Video İçerikleri",["Abdominal cerrahide anestezi","Ürolojik cerrahide anestezi","Abdominal cerrahide anestezi olgu sunumu - kompartman sendromu","Bariatrik cerrahi ve obez hastalarda anestezi","Süper obez olguda anestezi yönetimi - olgu sunumu","Robotik cerrahide anestezi uygulamaları","Geriatrik anestezi","Diz, kalça ve bel cerrahisinde anestezi","Biyoistatistik 1 - tamamlayıcı ölçütler","Biyoistatistik 2 - önemlilik testleri","Ameliyathane dışı anestezi","Metabolik ve endokrin hastalıklarda anestezi","Renal yetmezlikli hastada anestezi","Karaciğer hastalıklarında anestezi","Transplantasyon cerrahisinde anestezi","Transplante edilmiş organı olan hastada anestezi","Kanserli hastalarda anestezi","Sigara, alkol ve madde bağımlılarında anestezi yönetimi"]]]}
+];
+const STORE="tard_anestezi_tracker_v1";
+let saved={};try{saved=JSON.parse(localStorage.getItem(STORE)||"{}")}catch(e){saved={}}
+let onlyRemaining=false;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function allItems(){return curriculum.flatMap((m,mi)=>m.groups.flatMap((g,gi)=>g[1].map((topic,ti)=>({key:`${mi}-${gi}-${ti}`,topic,module:m.title,group:g[0]}))))}
+function render(){
+ const root=document.getElementById("modules"),q=document.getElementById("search").value.trim().toLocaleLowerCase("tr-TR");
+ // Yeniden çizimden önce açık olan modülleri kaydet; işaretleme sonrası kategori kapanmasın.
+ const openedModules=new Set([...root.querySelectorAll("details.module")]
+   .filter(d=>d.open).map(d=>Number(d.dataset.moduleIndex)));
+ root.innerHTML="";
+ curriculum.forEach((m,mi)=>{
+  const moduleItems=m.groups.flatMap((g,gi)=>g[1].map((topic,ti)=>({key:`${mi}-${gi}-${ti}`,topic,group:g[0]})));
+  const visible=moduleItems.filter(it=>(!onlyRemaining||!saved[it.key])&&(!q||(it.topic+" "+m.title+" "+it.group).toLocaleLowerCase("tr-TR").includes(q)));
+  if(!visible.length)return;
+  const details=document.createElement("details");details.className="module";
+  details.dataset.moduleIndex=String(mi);
+  details.open=!!q || openedModules.has(mi);
+  const done=moduleItems.filter(it=>saved[it.key]).length;
+  details.innerHTML=`<summary class="module-head"><span class="num">${mi+1}</span><span class="module-title"><b>${esc(m.title.replace(/^\d+\.\s*/,""))}</b><small>${moduleItems.length} konu başlığı</small></span><span class="module-count">${done}/${moduleItems.length} tamamlandı</span><span class="chevron">⌄</span></summary><div class="items"></div>`;
+  const list=details.querySelector(".items");let currentGroup="";
+  m.groups.forEach((g,gi)=>{
+   const allGroupTopics=g[1].map((topic,ti)=>({key:`${mi}-${gi}-${ti}`,topic,group:g[0]}));
+   const topics=allGroupTopics.filter(it=>(!onlyRemaining||!saved[it.key])&&(!q||(it.topic+" "+m.title+" "+it.group).toLocaleLowerCase("tr-TR").includes(q)));
+   if(!topics.length)return;
+   const completedGroupTopics=allGroupTopics.filter(it=>!!saved[it.key]);
+   const allGroupDone=completedGroupTopics.length===allGroupTopics.length;
+   const groupDate=allGroupDone?completedGroupTopics.map(it=>saved[it.key]).sort((a,b)=>{
+     const pa=a.split("."),pb=b.split(".");return new Date(+pa[2],+pa[1]-1,+pa[0])-new Date(+pb[2],+pb[1]-1,+pb[0]);
+   }).at(-1):"";
+   const label=document.createElement("div");label.className="group";
+   label.innerHTML=`<input class="group-check" type="checkbox" ${allGroupDone?"checked":""} aria-label="${esc(g[0])} kategorisindeki tüm konuları tamamlandı olarak işaretle"><span class="group-name">${esc(g[0])}</span><span class="group-count">${completedGroupTopics.length}/${allGroupTopics.length}</span><span class="group-date">${groupDate?"Bitti: "+esc(groupDate):""}</span>`;
+   const groupCheck=label.querySelector("input");
+   groupCheck.indeterminate=completedGroupTopics.length>0&&!allGroupDone;
+   groupCheck.addEventListener("change",e=>{
+     const d=new Date();const today=`${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${d.getFullYear()}`;
+     allGroupTopics.forEach(it=>{if(e.target.checked)saved[it.key]=today;else delete saved[it.key]});
+     try{localStorage.setItem(STORE,JSON.stringify(saved))}catch(err){alert("Tarayıcı kaydı yapılamadı. Gizli sekme veya depolama kısıtlaması olabilir.")}
+     render();
+   });
+   list.appendChild(label);
+   topics.forEach(it=>{
+    const checked=!!saved[it.key],row=document.createElement("label");row.className="item";
+    row.innerHTML=`<input type="checkbox" ${checked?"checked":""} aria-label="${esc(it.topic)} tamamlandı"><span class="topic ${checked?"done":""}">${esc(it.topic)}</span><span class="date ${checked?"":"empty"}">${checked?"Bitti: "+esc(saved[it.key]):""}</span>`;
+    row.querySelector("input").addEventListener("change",e=>{
+      if(e.target.checked){const d=new Date();saved[it.key]=`${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${d.getFullYear()}`}
+      else delete saved[it.key];
+      try{localStorage.setItem(STORE,JSON.stringify(saved))}catch(err){alert("Tarayıcı kaydı yapılamadı. Gizli sekme veya depolama kısıtlaması olabilir.")}
+      render();
+    });
+    list.appendChild(row);
+   });
+  });
+  root.appendChild(details);
+ });
+ document.getElementById("empty").style.display=root.children.length?"none":"block";
+ const all=allItems(),done=all.filter(it=>saved[it.key]).length;
+ document.getElementById("total").textContent=all.length;document.getElementById("completed").textContent=done;document.getElementById("remaining").textContent=all.length-done;document.getElementById("bar").style.width=(all.length?done/all.length*100:0)+"%";
+}
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("openAll").onclick=()=>document.querySelectorAll("details.module").forEach(d=>d.open=true);
+document.getElementById("closeAll").onclick=()=>document.querySelectorAll("details.module").forEach(d=>d.open=false);
+document.getElementById("showRemaining").onclick=()=>{onlyRemaining=!onlyRemaining;document.getElementById("showRemaining").textContent=onlyRemaining?"Tüm konuları göster":"Kalanları göster";render()};
+document.getElementById("reset").onclick=()=>{if(confirm("Bütün tamamlanma işaretleri ve tarihler silinsin mi?")){saved={};localStorage.removeItem(STORE);render()}};
+render();
+</script>
+</body></html>

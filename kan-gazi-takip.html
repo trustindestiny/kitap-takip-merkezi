@@ -1,0 +1,71 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Marino ICU Book Takip Listesi</title><style>
+:root{color-scheme:light dark;--bg:#f3f6fb;--card:white;--ink:#17243a;--muted:#64748b;--line:#dce4ee;--blue:#2459a9;--green:#16794b}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,Arial,sans-serif}header{background:linear-gradient(120deg,#10233f,#2459a9);color:white;padding:25px 18px 32px}header div,main,footer{max-width:1000px;margin:auto}h1{margin:0 0 6px;font-size:clamp(24px,4vw,34px)}header p{margin:0;color:#d9e6ff}main{padding:0 14px;margin-top:-14px;margin-bottom:30px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}.stat,.toolbar,details{background:var(--card);border:1px solid var(--line);border-radius:13px}.stat{padding:12px 15px}.stat small{color:var(--muted);font-size:11px;text-transform:uppercase;font-weight:bold}.stat strong{display:block;font-size:24px}.bar{height:5px;background:#dce4ee;border-radius:9px;margin-top:5px;overflow:hidden}.bar div{height:100%;background:#28a36a;width:0}.toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:10px;margin-bottom:12px}input[type=search]{flex:1;min-width:190px;padding:10px;border:1px solid var(--line);border-radius:8px;font:inherit}button{padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer}.hint,footer{font-size:12px;color:var(--muted)}.hint{margin:0 2px 12px}details{overflow:hidden;margin-bottom:11px}summary{list-style:none;cursor:pointer}summary::-webkit-details-marker{display:none}.head{display:flex;align-items:center;gap:10px;padding:13px}.head input{width:19px;height:19px;accent-color:#168451}.roman{background:#eaf1ff;color:#2459a9;border-radius:9px;padding:7px 10px;font-weight:bold}.gname{flex:1;font-weight:800}.meta{font-size:12px;color:var(--muted)}.topics{border-top:1px solid var(--line);padding:3px 14px 10px}.topic{display:flex;gap:9px;align-items:flex-start;padding:10px 2px;border-bottom:1px solid var(--line)}.topic:last-child{border:0}.topic input{width:18px;height:18px;accent-color:#168451;margin-top:3px}.name{flex:1}.done{color:#7b8492}.topic.completed{background:#eef1f4;border-radius:8px;padding-left:8px;padding-right:8px}.topic.completed .name{color:#7b8492;text-decoration:none}.topic.completed .page{color:#7b8492}.page{font-size:12px;color:var(--muted);white-space:nowrap}.date{font-size:11px;color:var(--green);white-space:nowrap;font-weight:bold}.empty{text-align:center;padding:20px;color:var(--muted);display:none}footer{padding:0 18px 24px}@media(max-width:580px){.stats{gap:5px}.stat{padding:9px}.stat strong{font-size:20px}.stat small{font-size:9px}.head{gap:7px;padding:11px 9px}.meta{display:none}.topics{padding:3px 9px 8px}.topic{gap:7px}.page,.date{font-size:10px}}@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#0c1422;--card:#131f31;--ink:#e8eef8;--muted:#9aabc2;--line:#29384d}.roman{background:#1c3354;color:#d9e6ff}.bar{background:#29384d}}
+
+/* iPhone / iOS Safari usability */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { padding-bottom: env(safe-area-inset-bottom); }
+button, input, summary, label { -webkit-tap-highlight-color: transparent; }
+input[type="checkbox"] { min-width: 22px; min-height: 22px; }
+@media (max-width: 600px) {
+  header { padding: calc(20px + env(safe-area-inset-top)) 16px 28px; }
+  main { padding-left: 12px; padding-right: 12px; }
+  .toolbar { position: sticky; top: 0; z-index: 5; box-shadow: 0 3px 12px rgba(0,0,0,.06); }
+  input[type="search"] { width: 100%; min-width: 100%; min-height: 44px; font-size: 16px; }
+  button { min-height: 44px; }
+  .head { min-height: 54px; }
+  .topic { min-height: 48px; align-items: center; }
+  .topic input { min-width: 22px; min-height: 22px; }
+  .head input { min-width: 22px; min-height: 22px; }
+  .page { white-space: nowrap; }
+  .date { max-width: 100%; }
+}
+
+
+.length-badge{display:inline-block;margin-left:5px;padding:2px 7px;border-radius:7px;background:#e4f7eb;color:#16794b;font-size:11px;font-weight:800;white-space:nowrap;border:1px solid #b9e8cb}
+@media(prefers-color-scheme:dark){.length-badge{background:#123b2b;color:#8ee3b1;border-color:#245b43}}
+</style></head><body><header><div><h1>Kan Gazı Kitabı Takip Listesi</h1><p>Gönderdiğin içindekiler fotoğraflarındaki 6 ana bölüm ve 35 bölüm.</p></div></header><main><section class="stats"><div class="stat"><small>Toplam konu</small><strong id="total">35</strong></div><div class="stat"><small>Tamamlanan</small><strong id="done">0</strong><div class="bar"><div id="fill"></div></div></div><div class="stat"><small>Kalan konu</small><strong id="left">35</strong></div></section><div class="toolbar"><input id="search" type="search" placeholder="Bölüm adı veya numarası ara"><button id="open">Tümünü aç</button><button id="close">Tümünü kapat</button><button id="filter">Kalanları göster</button><button id="clear">İşaretleri temizle</button></div><p class="hint">İşaretler ve tamamlanma tarihleri aynı tarayıcı profilinde otomatik kaydedilir. Kategori kutusu o kategorideki tüm konuları birlikte tamamlar.</p><div id="list"></div><div class="empty" id="empty">Eşleşme bulunamadı.</div></main><footer>Kaynak: gönderdiğin Kan Gazlarına Genel Bakış kitabının içindekiler fotoğrafları. Sayfa numaraları fotoğraflardaki baskı numaralarıdır.</footer>
+<script>
+const data=[
+[1,'Tarihsel Arkaplan; Asit-Baz Kavramı ve Arter Kan Gazı Teknolojisinin Evrimi',3,1],
+[2,'Asit-Baz Fizyolojisi',11,1],
+[3,'Sıvı ve Elektrolit Fizyolojisi',21,1],
+[4,'Temel Elektrolit Bozuklukları: Hiper/Hiponatremi, Hiper/Hipokalsemi, Hiper/Hipomagnezemi, Hiper/Hipokalemi',41,1],
+[5,'Hiperkloremi-Hipokloremi',87,1],
+[6,'Albümin ve Fosfatın Asit-Baz Dengesi Üzerindeki Etkisi',95,1],
+[7,'Laktat ve Asit-Baz Bozukluğu',101,1],
+[8,'Oksijen Sunumu',115,2],
+[9,'Gaz Değişimi',121,2],
+[10,'Kan Gazı Cihazlarının Özellikleri ve Çalışma İlkeleri',141,3],
+[11,'ETCO₂ - PaCO₂',153,3],
+[12,'Transkutanöz Kan Gazları Monitörizasyonu',163,3],
+[13,'Kombine veya Tekil CO₂ Ölçümlerinin Klinik Kullanımı: Ven PCO₂, Ven-Arter PCO₂ Farkı, Arter-TcPCO₂ Farkı',177,3],
+[14,'Kan Gazı Analizinde Pre-Analitik Konular ve Önlemler',187,3],
+[15,'Solunumsal Asit-Baz Bozuklukları',203,4],
+[16,'Asit-Baz Bozuklukları Metabolik Asit-Baz Bozuklukları; HCO₃ Merkezli Değerlendirme',225,4],
+[17,'Metabolik Asit-Baz Bozukluklarının Değerlendirilmesinde Baz Excess (BE), Anyon Gap (AG) ve Fencl-Stewart Yaklaşımları',251,4],
+[18,'Stewart Yaklaşımı (Fizikokimyasal Yaklaşım) ve Kompleks Asit-Baz Bozukluklarında Kullanımı',261,4],
+[19,'Asit-Baz Bozukluklarına Yaklaşımda Elektronik Çözümler',275,4],
+[20,'Beyin Omurilik Sıvısı ve Kan-Beyin Bariyerinin Asit-Baz Dengesine Etkileri: BOS Gazının Klinik Kullanımı',285,5],
+[21,'Kullanılan Sıvıların Asit-Baz Durumuna Etkisi',299,5],
+[22,'Ketoasidozlar ve Ketoalkaloz; Değerlendirme, Tanı, Ayırıcı Tanı ve Tedavi İlişkisi',309,5],
+[23,'Renal Tübüler Asidozlar: Değerlendirme, Tanı, Ayırıcı Tanı ve Tedavi İlişkisi',337,5],
+[24,'Kronik Böbrek Yetersizliğinde Asit-Baz Bozuklukları',351,5],
+[25,'Gebelerde Asit-Baz Bozukluğu',365,5],
+[26,'Gastrointestinal Hastalıklarda Asit-Baz Bozuklukları',369,5],
+[27,'Akut Böbrek Yetmezliği ve Renal Replasman Tedavileri Esnasında Gelişen Asit-Baz Bozuklukları (Değerlendirme ve Çözüm Önerileri)',385,5],
+[28,'Karaciğer Hastalıklarında Asit-Baz Bozuklukları',405,5],
+[29,'İlaçlarla İlişkili Asit-Baz Bozuklukları',427,5],
+[30,'Toksik Maddeler ile İlişkili Asit-Baz Bozukluğu',449,5],
+[31,'Total Parenteral Nütrisyon Uygulamaları ve Asit-Baz Bozuklukları',461,5],
+[32,'İntraoperatif Asit-Baz Bozuklukları',465,5],
+[33,'Onkolojik-Hematolojik Hastalarda Asit-Baz Bozuklukları',481,5],
+[34,'Perioperatif Dönemde Sık Karşılaşılan Asit-Baz Bozuklukları',485,5],
+[35,'Arter Kan Gazı Örnek Çözümler',491,6]
+];
+const names={1:'Temel Asit-Baz Fizyolojisi ve Bozuklukları',2:'Oksijen Sunumu ve Gaz Değişimi',3:'Asit-Baz Değerlendirme ve Ölçüm Yöntemleri',4:'Asit-Baz Bozuklukları',5:'Özellikli Durumlar ve Asit-Baz Bozuklukları',6:'Örnek Olgularla Pratik Değerlendirme'};
+const storageKey="kan_gazi_book_tracker_v1";let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||"{}" )}catch(e){}let remaining=false;
+function persist(){try{localStorage.setItem(storageKey,JSON.stringify(saved))}catch(e){alert("Tarayıcıya kayıt yapılamadı. Depolama ayarlarını kontrol edin.")}}
+function date(){let d=new Date();return String(d.getDate()).padStart(2,"0")+"."+String(d.getMonth()+1).padStart(2,"0")+"."+d.getFullYear()}
+function render(){let root=document.getElementById("list");root.innerHTML="";let q=document.getElementById("search").value.toLocaleLowerCase("tr-TR").trim();Object.keys(names).forEach(k=>{let arr=data.filter(x=>x[3]==k),shown=arr.filter(x=>(!remaining||!saved[x[0]])&&(!q||(`${x[0]} ${x[1]} ${x[2]} ${names[k]}`).toLocaleLowerCase("tr-TR").includes(q)));if(!shown.length)return;let n=arr.filter(x=>saved[x[0]]).length,det=document.createElement("details");det.open=true;let nextCat=data.filter(x=>x[3]===+k+1);let catLen=nextCat.length?Math.min(...nextCat.map(x=>x[2]))-Math.min(...arr.map(x=>x[2])):null;det.innerHTML=`<summary class="head"><input type="checkbox" ${n===arr.length?"checked":""} aria-label="Tüm kategoriyi tamamla"><span class="roman">${String(+k).padStart(2,"0")}</span><span class="gname">${names[k]}</span><span class="meta">${n}/${arr.length}</span>${catLen!==null?`<span class="length-badge">${catLen} sayfa</span>`:""}</summary><div class="topics"></div>`;let cb=det.querySelector("summary input");cb.addEventListener("click",e=>e.stopPropagation());cb.addEventListener("change",e=>{let was=det.open;arr.forEach(x=>e.target.checked?saved[x[0]]=date():delete saved[x[0]]);persist();render();let target=[...root.querySelectorAll("details")].find(d=>d.querySelector(".gname")?.textContent===names[k]);if(target)target.open=was});let box=det.querySelector(".topics");shown.forEach(x=>{let checked=!!saved[x[0]],row=document.createElement("label");row.className="topic"+(checked?" completed":"");let next=data.find(y=>y[0]===x[0]+1);let length=next?next[2]-x[2]:null;row.innerHTML=`<input type="checkbox" ${checked?"checked":""}><span class="name ${checked?"done":""}">${x[0]}. ${x[1]}</span><span class="date">${checked?"Bitti: "+saved[x[0]]:""}</span><span class="page">s. ${x[2]}${length!==null?`<span class="length-badge">${length} sayfa</span>`:""}</span>`;row.querySelector("input").addEventListener("change",e=>{let was=det.open;e.target.checked?saved[x[0]]=date():delete saved[x[0]];persist();render();let target=[...root.querySelectorAll("details")].find(d=>d.querySelector(".gname")?.textContent===names[k]);if(target)target.open=was});box.appendChild(row)});root.appendChild(det)});let n=data.filter(x=>saved[x[0]]).length;document.getElementById("total").textContent=data.length;document.getElementById("done").textContent=n;document.getElementById("left").textContent=data.length-n;document.getElementById("fill").style.width=n/data.length*100+"%";document.getElementById("empty").style.display=root.children.length?"none":"block"}
+document.getElementById("search").value=new URLSearchParams(location.search).get("q")||"";document.getElementById("search").addEventListener("input",render);document.getElementById("open").onclick=()=>document.querySelectorAll("details").forEach(x=>x.open=true);document.getElementById("close").onclick=()=>document.querySelectorAll("details").forEach(x=>x.open=false);document.getElementById("filter").onclick=()=>{remaining=!remaining;document.getElementById("filter").textContent=remaining?"Tüm bölümleri göster":"Kalanları göster";render()};document.getElementById("clear").onclick=()=>{if(confirm("Bütün işaretler ve tarihler silinsin mi?")){saved={};persist();render()}};render();
+</script></body></html>

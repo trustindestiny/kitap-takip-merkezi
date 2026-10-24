@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f8fa">
+<title>Karaciğer Transplantasyonu Takip Listesi</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f5f6f8}
+*{box-sizing:border-box}body{margin:0;padding:0 0 env(safe-area-inset-bottom)}
+header{position:sticky;top:0;z-index:5;background:#f5f6f8ee;backdrop-filter:blur(12px);padding:16px 14px 12px;border-bottom:1px solid #dfe3e8}
+h1{font-size:21px;line-height:1.2;margin:0 0 6px} .sub{font-size:12px;color:#697386;margin-bottom:12px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}input[type=search]{grid-column:1/-1;width:100%;font-size:16px;padding:11px 12px;border:1px solid #cfd5df;border-radius:12px;background:white}
+button,.filter{font:inherit;font-size:13px;border:1px solid #cfd5df;background:#fff;border-radius:10px;padding:9px 10px;color:#263247}
+.filter{display:flex;align-items:center;gap:7px}
+main{padding:12px;max-width:850px;margin:auto}.summary{font-size:13px;color:#536075;margin:4px 2px 12px}
+.category{background:#fff;border:1px solid #e0e4ea;border-radius:14px;margin:0 0 12px;overflow:hidden}
+.cathead{display:flex;align-items:center;gap:8px;padding:13px 12px;background:#edf1f6}
+.cathead .toggle{font-size:16px;padding:2px 5px;border:0;background:transparent}
+.catname{font-weight:750;font-size:14px;flex:1;line-height:1.3}
+.catpages{white-space:nowrap;font-size:11px;color:#41566f;background:#dce7f4;border-radius:7px;padding:4px 6px}
+.cattools{display:flex;gap:5px;padding:0 10px 10px;background:#edf1f6}
+.cattools button{font-size:11px;padding:6px 8px}
+.entries{padding:0 10px}.entry{display:flex;align-items:flex-start;gap:9px;padding:12px 2px;border-bottom:1px solid #edf0f3}.entry:last-child{border-bottom:0}
+.entry.done{background:#f0f1f2;border-radius:8px}
+.check{width:22px;height:22px;flex:0 0 22px;margin-top:1px;accent-color:#62758b}
+.details{min-width:0;flex:1}.topic{font-size:14px;line-height:1.38;font-weight:550;overflow-wrap:anywhere}.topic.doneText{color:#68717c}
+.meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:6px;font-size:12px;color:#647084}
+.page{font-variant-numeric:tabular-nums;font-weight:650;color:#34445b}.length{background:#dff3df;color:#23662d;border-radius:6px;padding:3px 6px;font-weight:700}.completed{color:#6b7280}
+.empty{padding:22px;text-align:center;color:#687386}
+@media(min-width:650px){main{padding:18px}.topic{font-size:15px}.catname{font-size:15px}}
+</style></head><body>
+<header><h1>Karaciğer Transplantasyonu</h1><div class="sub">Kitap takip listesi · Tamamlanma durumu bu tarayıcıda saklanır</div>
+<div class="controls"><input id="search" type="search" placeholder="Konu ara…" aria-label="Konu ara">
+<label class="filter"><input id="remaining" type="checkbox"> Yalnızca tamamlanmamışlar</label>
+<button id="expand">Tümünü aç</button><button id="collapse">Tümünü kapat</button></div></header>
+<main><div class="summary" id="summary"></div><div id="list"></div></main>
+<script>
+const categories=[{"id": 1, "title": "Bölüm 1 — Giriş", "start": 1}, {"id": 2, "title": "Bölüm 2 — Preoperatif Hazırlık", "start": 9}, {"id": 3, "title": "Bölüm 3 — İntraoperatif Yönetim", "start": 107}, {"id": 4, "title": "Bölüm 4 — Postoperatif Bakım", "start": 255}, {"id": 5, "title": "Sonuçlar ve Tavsiyeler", "start": 287}];
+const items=[{"num": "1", "title": "Giriş", "page": 1, "cat": 1, "length": 2}, {"num": "1.1", "title": "Kılavuzun Amacı ve Kapsamı", "page": 3, "cat": 1, "length": 2}, {"num": "1.2", "title": "Karaciğer Naklinde Anestezinin Önemi ve Karşılaşılan Zorluklar", "page": 5, "cat": 1, "length": 4}, {"num": "2", "title": "Preoperatif Hazırlık", "page": 9, "cat": 2, "length": 2}, {"num": "2.1", "title": "Hasta Değerlendirmesi ve Risk Yönetimi", "page": 11, "cat": 2, "length": 20}, {"num": "2.2", "title": "Renal Değerlendirme ve Hepatorenal Sendrom", "page": 31, "cat": 2, "length": 8}, {"num": "2.3", "title": "Akciğerin Değerlendirilmesi, Hepatopulmoner Sendrom, Porto-Pulmoner Hipertansiyon", "page": 39, "cat": 2, "length": 16}, {"num": "2.4", "title": "Kardiyovasküler Sistem Değerlendirilmesi", "page": 55, "cat": 2, "length": 18}, {"num": "2.5", "title": "Hepatik Ensefalopati", "page": 73, "cat": 2, "length": 20}, {"num": "2.6", "title": "Preoperatif Koagülopati Yönetimi ve Beslenme Durumu Değerlendirmesi", "page": 93, "cat": 2, "length": 6}, {"num": "2.7", "title": "Kontrendikasyonlar", "page": 99, "cat": 2, "length": 8}, {"num": "3", "title": "İntraoperatif Yönetim", "page": 107, "cat": 3, "length": 2}, {"num": "3.1", "title": "Anestezi İndüksiyonu ve Genel Anestezi Yönetimi", "page": 109, "cat": 3, "length": 4}, {"num": "3.2", "title": "İntravasküler Erişim, İnvaziv ve Non-invaziv Hemodinamik Monitörizasyon", "page": 113, "cat": 3, "length": 4}, {"num": "3.3", "title": "Hemodinamik Monitörizasyon ve TEE Kullanımı", "page": 117, "cat": 3, "length": 32}, {"num": "3.4", "title": "Nörolojik Değerlendirmeler ve Güncel Yaklaşımlar", "page": 149, "cat": 3, "length": 14}, {"num": "3.5", "title": "Sıvı ve Kan Transfüzyon Yönetimi", "page": 163, "cat": 3, "length": 12}, {"num": "3.6", "title": "Hemodinamik ve Vazopressör Yönetim", "page": 175, "cat": 3, "length": 26}, {"num": "3.7", "title": "İmmünsüpresanlar", "page": 201, "cat": 3, "length": 10}, {"num": "3.8", "title": "Cerrahi Evreler ve Özel Durumlar", "page": 211, "cat": 3, "length": 10}, {"num": "3.9", "title": "Post-Reperfüzyon Sendromu ve Yönetimi", "page": 221, "cat": 3, "length": 8}, {"num": "3.10", "title": "Karaciğer Transplantasyonunda İntraoperatif Metabolik Yönetim", "page": 229, "cat": 3, "length": 10}, {"num": "3.11", "title": "Transplantasyon Sırasında Gelişebilecek Akut Komplikasyonlar", "page": 239, "cat": 3, "length": 12}, {"num": "3.12", "title": "Erken Ekstübasyon ve Postoperatif Planlama", "page": 251, "cat": 3, "length": 4}, {"num": "4", "title": "Postoperatif Bakım", "page": 255, "cat": 4, "length": 2}, {"num": "4.1", "title": "Ağrı Yönetimi ve Analjezi", "page": 257, "cat": 4, "length": 12}, {"num": "4.2", "title": "Graft Fonksiyonlarının Takibi", "page": 269, "cat": 4, "length": 4}, {"num": "4.3", "title": "Erken Mobilizasyon ve Beslenme", "page": 273, "cat": 4, "length": 6}, {"num": "4.4", "title": "Postoperatif Komplikasyonların Yönetimi", "page": 279, "cat": 4, "length": 4}, {"num": "4.5", "title": "Graft Disfonksiyonu ve Re-Transplantasyon", "page": 283, "cat": 4, "length": 4}, {"num": "5", "title": "Sonuçlar ve Tavsiyeler", "page": 287, "cat": 5, "length": 2}, {"num": "5.1", "title": "Kılavuzun Uygulama Stratejileri", "page": 289, "cat": 5, "length": 1}, {"num": "5.2", "title": "Gelecek araştırmalar ve kılavuzun güncellenme süreci", "page": 290, "cat": 5, "length": null}];
+const KEY="karaciger_transplant_tracker_v1";
+let state={};
+try{state=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){state={}}
+const opened={};
+categories.forEach(c=>opened[c.id]=true);
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function dateText(v){if(!v)return "";return v}
+function render(){
+ const q=$("search").value.trim().toLocaleLowerCase("tr");
+ const rem=$("remaining").checked;
+ const doneCount=items.filter(x=>state[x.num+"|"+x.page]?.done).length;
+ $("summary").textContent=`Tamamlanan ${doneCount} / ${items.length} konu`;
+ let out="", shown=0;
+ for(const c of categories){
+  const arr=items.filter(x=>x.cat===c.id && (!rem||!state[x.num+"|"+x.page]?.done) && (!q||(x.num+" "+x.title+" "+x.page).toLocaleLowerCase("tr").includes(q)));
+  if(!arr.length)continue;
+  shown+=arr.length;
+  const all=items.filter(x=>x.cat===c.id);
+  const start=c.start;
+  const next=categories.find(x=>x.id===c.id+1);
+  const catlen=next?next.start-start:null;
+  out+=`<section class="category"><div class="cathead"><button class="toggle" data-toggle="${c.id}" aria-label="Bölümü aç/kapat">${opened[c.id]?"▾":"▸"}</button><div class="catname">${esc(c.title)}</div><span class="catpages">${start}${catlen?`–${start+catlen-1}`:""}${catlen?` · ${catlen} sf`:""}</span></div>
+  <div class="cattools"><button data-mark="${c.id}">Görünenleri tamamla</button><button data-unmark="${c.id}">İşaretleri kaldır</button></div>`;
+  if(opened[c.id]){out+='<div class="entries">'+arr.map(x=>{
+   const k=x.num+"|"+x.page, st=state[k]||{}, d=!!st.done;
+   return `<label class="entry ${d?"done":""}"><input class="check" type="checkbox" data-key="${esc(k)}" ${d?"checked":""}><div class="details"><div class="topic ${d?"doneText":""}">${esc(x.num)}. ${esc(x.title)}</div><div class="meta"><span class="page">s. ${x.page}</span>${x.length?`<span class="length">${x.length} sayfa</span>`:""}${d&&st.date?`<span class="completed">Bitti: ${esc(st.date)}</span>`:""}</div></div></label>`
+  }).join("")+'</div>'}
+  out+='</section>';
+ }
+ $("list").innerHTML=out||'<div class="empty">Eşleşen konu bulunamadı.</div>';
+}
+$("list").addEventListener("change",e=>{const el=e.target;if(!el.matches("[data-key]"))return;const k=el.dataset.key;if(el.checked){state[k]={done:true,date:new Intl.DateTimeFormat("tr-TR").format(new Date())}}else{delete state[k]}save();render()});
+$("list").addEventListener("click",e=>{
+ const t=e.target.closest("button");if(!t)return;
+ if(t.dataset.toggle){opened[t.dataset.toggle]=!opened[t.dataset.toggle];render()}
+ if(t.dataset.mark){items.filter(x=>x.cat===Number(t.dataset.mark)).forEach(x=>{const k=x.num+"|"+x.page;state[k]={done:true,date:new Intl.DateTimeFormat("tr-TR").format(new Date())}});save();render()}
+ if(t.dataset.unmark){items.filter(x=>x.cat===Number(t.dataset.unmark)).forEach(x=>delete state[x.num+"|"+x.page]);save();render()}
+});
+$("search").value=new URLSearchParams(location.search).get("q")||"";$("search").addEventListener("input",render);$("remaining").addEventListener("change",render);
+$("expand").addEventListener("click",()=>{categories.forEach(c=>opened[c.id]=true);render()});
+$("collapse").addEventListener("click",()=>{categories.forEach(c=>opened[c.id]=false);render()});
+render();
+</script></body></html>

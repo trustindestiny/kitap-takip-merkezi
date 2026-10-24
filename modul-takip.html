@@ -141,7 +141,7 @@ function render(){
  const all=allItems(),done=all.filter(it=>saved[it.key]).length;
  document.getElementById("total").textContent=all.length;document.getElementById("completed").textContent=done;document.getElementById("remaining").textContent=all.length-done;document.getElementById("bar").style.width=(all.length?done/all.length*100:0)+"%";
 }
-document.getElementById("search").addEventListener("input",render);
+document.getElementById("search").value=new URLSearchParams(location.search).get("q")||"";document.getElementById("search").addEventListener("input",render);
 document.getElementById("openAll").onclick=()=>document.querySelectorAll("details.module").forEach(d=>d.open=true);
 document.getElementById("closeAll").onclick=()=>document.querySelectorAll("details.module").forEach(d=>d.open=false);
 document.getElementById("showRemaining").onclick=()=>{onlyRemaining=!onlyRemaining;document.getElementById("showRemaining").textContent=onlyRemaining?"Tüm konuları göster":"Kalanları göster";render()};

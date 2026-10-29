@@ -25,6 +25,7 @@ main{max-width:1100px;margin:-23px auto 38px;padding:0 16px}.stats{display:grid;
 <a class="card" href="kan-gazi-takip.html" data-key="kan_gazi_book_tracker_v1" data-total="35"><h2>Kan Gazı Kitabı</h2><div class="progress"><span></span></div><div class="details"></div></a>
 <a class="card" href="karaciger-transplant-takip.html" data-key="karaciger_transplant_tracker_v1" data-total="33"><h2>Karaciğer Transplantasyonu</h2><div class="progress"><span></span></div><div class="details"></div></a>
 </section>
+<section class="data-tools" aria-label="Veri yedekleme"><div class="data-actions"><button type="button" id="exportData">Verileri Aktar (JSON)</button><button type="button" id="importData">Verileri Yükle (JSON)</button><input type="file" id="importFile" accept=".json,application/json" hidden></div><div id="dataStatus" role="status" aria-live="polite"></div></section>
 </main>
 <script>
 const trackers=[{name:"Anestezi Eğitim Modülleri",url:"modul-takip.html",key:"tard_anestezi_tracker_v1"},{name:"Miller Anestezi",url:"miller-takip.html",key:"miller_anestezi_tracker_v1"},{name:"Marino Yoğun Bakım",url:"marino-takip.html",key:"marino_icu_tracker_v1"},{name:"Lange Anestezi",url:"lange-takip.html",key:"lange_anestezi_tracker_v1"},{name:"Rejyonel Bloklar",url:"rejyonel-blok-takip.html",key:"regional_block_tracker_v1"},{name:"Kan Gazı Kitabı",url:"kan-gazi-takip.html",key:"kan_gazi_book_tracker_v1"},{name:"Karaciğer Transplantasyonu",url:"karaciger-transplant-takip.html",key:"karaciger_transplant_tracker_v1"}];

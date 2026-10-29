@@ -87,6 +87,7 @@ let saved={};try{saved=JSON.parse(localStorage.getItem(STORE)||"{}")}catch(e){sa
 let onlyRemaining=false;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function allItems(){return curriculum.flatMap((m,mi)=>m.groups.flatMap((g,gi)=>g[1].map((topic,ti)=>({key:`${mi}-${gi}-${ti}`,topic,module:m.title,group:g[0]}))))}
+let firstRender=true;
 function render(){
  const root=document.getElementById("modules"),q=document.getElementById("search").value.trim().toLocaleLowerCase("tr-TR");
  // Yeniden çizimden önce açık olan modülleri kaydet; işaretleme sonrası kategori kapanmasın.
@@ -99,7 +100,7 @@ function render(){
   if(!visible.length)return;
   const details=document.createElement("details");details.className="module";
   details.dataset.moduleIndex=String(mi);
-  details.open=!!q || openedModules.has(mi);
+  details.open=!!q || firstRender || openedModules.has(mi);
   const done=moduleItems.filter(it=>saved[it.key]).length;
   details.innerHTML=`<summary class="module-head"><span class="num">${mi+1}</span><span class="module-title"><b>${esc(m.title.replace(/^\d+\.\s*/,""))}</b><small>${moduleItems.length} konu başlığı</small></span><span class="module-count">${done}/${moduleItems.length} tamamlandı</span><span class="chevron">⌄</span></summary><div class="items"></div>`;
   const list=details.querySelector(".items");let currentGroup="";
@@ -138,6 +139,7 @@ function render(){
   root.appendChild(details);
  });
  document.getElementById("empty").style.display=root.children.length?"none":"block";
+ firstRender=false;
  const all=allItems(),done=all.filter(it=>saved[it.key]).length;
  document.getElementById("total").textContent=all.length;document.getElementById("completed").textContent=done;document.getElementById("remaining").textContent=all.length-done;document.getElementById("bar").style.width=(all.length?done/all.length*100:0)+"%";
 }

@@ -11,9 +11,14 @@ main{max-width:1100px;margin:-23px auto 38px;padding:0 16px}.stats{display:grid;
 @media(prefers-color-scheme:dark){:root{--bg:#0c1422;--card:#131f31;--ink:#e8eef8;--muted:#9aabc2;--line:#29384d}.symbol{background:#1c3354;color:#d9e6ff}.progress{background:#29384d}}
 .card{padding:13px;min-width:0}.card .top{display:none}.card h2{font-size:15px;line-height:1.3;margin:0 0 8px;overflow-wrap:anywhere}.card p{display:none}.card .progress{margin-top:0}.card .details{font-size:12px;margin-top:7px}
 @media(max-width:600px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.card{padding:12px}.card h2{font-size:14px}.card .details{font-size:11px}.global-search{padding:10px}}
+.data-tools{margin:0 0 14px;padding:12px;background:var(--card);border:1px solid var(--line);border-radius:14px}.data-actions{display:flex;gap:8px;flex-wrap:wrap}.data-actions button{flex:1;min-width:130px;border:1px solid #cbd5e1;border-radius:10px;padding:11px 12px;font:inherit;font-size:13px;font-weight:700;background:var(--card);color:var(--ink);cursor:pointer}.data-actions button:first-child{background:#2459a9;color:#fff;border-color:#2459a9}.data-help{font-size:12px;color:var(--muted);margin-top:8px}#dataStatus{font-size:12px;margin-top:7px;color:var(--muted)}@media(max-width:400px){.data-actions{flex-direction:column}.data-actions button{width:100%}}
 </style></head><body>
 <header><div class="wrap brand"><img src="assets/logo.svg" alt="Anestezi Takip Merkezi logosu"><div><h1>Anestezi Kitaplık Merkezi</h1></div></div></header>
 <main><section class="stats"><div class="metric"><small>Takip listesi</small><strong>7</strong></div><div class="metric"><small>İşaretlenen kayıt</small><strong id="doneAll">0</strong></div><div class="metric"><small>Genel ilerleme</small><strong id="percentAll">—</strong></div></section>
+<section class="data-tools" aria-label="Veri yedekleme">
+<div class="data-actions"><button type="button" id="exportData">Verileri Aktar (JSON)</button><button type="button" id="importData">Verileri Yükle (JSON)</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+<div class="data-help">İlerleme kayıtlarını JSON dosyası olarak yedekleyebilir veya daha önce aldığın yedeği yükleyebilirsin.</div><div id="dataStatus" role="status" aria-live="polite"></div>
+</section>
 <section class="global-search"><input id="globalSearch" type="search" placeholder="Tüm kitaplarda konu veya bölüm ara…" aria-label="Tüm kitaplarda ara"><div id="searchResults" class="search-results"></div><div id="searchStatus" class="search-status">Arama, tüm takip listelerindeki konu başlıklarını tarar.</div></section><h2>Kitapların ve eğitim modüllerin</h2><section class="grid">
 <a class="card" href="modul-takip.html" data-key="tard_anestezi_tracker_v1" data-total=""><h2>Anestezi Eğitim Modülleri</h2><div class="progress"><span></span></div><div class="details">Modül içindeki ilerlemeyi görüntüle</div></a>
 <a class="card" href="miller-takip.html" data-key="miller_anestezi_tracker_v1" data-total="50"><h2>Miller Anestezi</h2><div class="progress"><span></span></div><div class="details"></div></a>
@@ -30,5 +35,31 @@ function readState(key){try{return JSON.parse(localStorage.getItem(key)||"{}")||
 function norm(s){return String(s).toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/ı/g,"i")}
 function updateCards(){let totalDone=0,totalPossible=0;document.querySelectorAll(".card").forEach(card=>{const done=Object.keys(readState(card.dataset.key)).length;totalDone+=done;const total=Number(card.dataset.total);if(total){totalPossible+=total;const pct=Math.min(100,done/total*100);card.querySelector(".progress span").style.width=pct+"%";card.querySelector(".details").textContent=done+" / "+total+" · %"+Math.round(pct)}else card.querySelector(".details").textContent=done+" kayıt işaretli"});document.getElementById("doneAll").textContent=totalDone;document.getElementById("percentAll").textContent=totalPossible?Math.round(totalDone/totalPossible*100)+"%":"—"}
 updateCards();const moduleFrame=document.createElement("iframe");moduleFrame.hidden=true;moduleFrame.src="modul-takip.html";moduleFrame.onload=()=>{try{const total=Number(moduleFrame.contentDocument.getElementById("total")?.textContent);const card=document.querySelector('.card[data-key="tard_anestezi_tracker_v1"]');if(total&&card){card.dataset.total=total;updateCards()}}catch(e){}};document.body.appendChild(moduleFrame);
+const DATA_KEYS=["tard_anestezi_tracker_v1","miller_anestezi_tracker_v1","marino_icu_tracker_v1","lange_anestezi_tracker_v1","regional_block_tracker_v1","kan_gazi_book_tracker_v1","karaciger_transplant_tracker_v1"];
+const dataStatus=document.getElementById("dataStatus");
+document.getElementById("exportData").addEventListener("click",()=>{
+ try{
+  const data={};DATA_KEYS.forEach(key=>{const raw=localStorage.getItem(key);if(raw!==null){try{data[key]=JSON.parse(raw)}catch(e){data[key]=raw}}});
+  const payload={format:"anestezi-kitaplik-merkezi-backup",version:1,exportedAt:new Date().toISOString(),data};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="anestezi-kitaplik-yedek-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  dataStatus.textContent="JSON yedeği hazırlandı. Dosyayı güvenli bir yerde sakla.";
+ }catch(e){dataStatus.textContent="Yedek oluşturulamadı. Tarayıcı depolama alanını kontrol et."}
+});
+document.getElementById("importData").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",async e=>{
+ const file=e.target.files&&e.target.files[0];if(!file)return;
+ try{
+  const payload=JSON.parse(await file.text());
+  if(!payload||payload.format!=="anestezi-kitaplik-merkezi-backup"||!payload.data||typeof payload.data!=="object")throw new Error("format");
+  const incoming=Object.keys(payload.data).filter(k=>DATA_KEYS.includes(k));
+  if(!incoming.length)throw new Error("empty");
+  if(!confirm("Seçilen yedekteki "+incoming.length+" takip listesinin kayıtları bu tarayıcıya yüklensin mi? Bu listelerdeki mevcut kayıtların üzerine yazılır.")){dataStatus.textContent="Yükleme iptal edildi.";return}
+  incoming.forEach(key=>{const value=payload.data[key];if(typeof value==="string"){JSON.parse(value);localStorage.setItem(key,value)}else localStorage.setItem(key,JSON.stringify(value))});
+  dataStatus.textContent="Veriler başarıyla yüklendi. Ana sayfa yenileniyor…";
+  setTimeout(()=>location.reload(),500);
+ }catch(err){dataStatus.textContent=err.message==="empty"?"Bu dosyada tanınan takip listesi verisi bulunamadı.":"JSON dosyası geçersiz veya bu uygulamanın yedeği değil. Mevcut kayıtlar değiştirilmedi."}
+ finally{e.target.value=""}
+});
 let searchTimer;document.getElementById("globalSearch").addEventListener("input",()=>{clearTimeout(searchTimer);const q=document.getElementById("globalSearch").value.trim(),results=document.getElementById("searchResults"),status=document.getElementById("searchStatus");if(!q){results.innerHTML="";status.textContent="Arama, tüm takip listelerindeki konu başlıklarını tarar.";return}status.textContent="Tüm listeler aranıyor…";results.innerHTML="";searchTimer=setTimeout(async()=>{const matches=[];await Promise.all(trackers.map(async t=>{try{const response=await fetch(t.url,{cache:"no-store"});if(response.ok&&norm(await response.text()).includes(norm(q)))matches.push(t)}catch(e){}}));results.innerHTML="";matches.forEach(t=>{const a=document.createElement("a");a.className="search-result";a.href=t.url+"?q="+encodeURIComponent(q);a.innerHTML="<strong></strong><small>Bu listedeki eşleşen başlıkları görüntüle</small>";a.querySelector("strong").textContent=t.name;results.appendChild(a)});status.textContent=matches.length?matches.length+" takip listesinde eşleşme bulundu. Bir listeye dokununca eşleşen başlıklar açılır.":"Eşleşme bulunamadı."},180)});
 </script></body></html>
